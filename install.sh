@@ -45,7 +45,7 @@ After=network-online.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/s3fs ${S3_BUCKET} ${S3FS_MOUNT_PATH} -o passwd_file=${S3FS_PASSWD_FILE},endpoint=${AWS_BUCKET_REGION} -o allow_other -o umask=0002
+ExecStart=/usr/bin/s3fs ${S3_BUCKET} ${S3FS_MOUNT_PATH} -o passwd_file=${S3FS_PASSWD_FILE},endpoint=${AWS_BUCKET_REGION} -o allow_other -o umask=0000
 ExecStop=/bin/fusermount -u ${S3FS_MOUNT_PATH}
 
 [Install]
