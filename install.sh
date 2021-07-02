@@ -22,9 +22,6 @@ mkdir -p $S3FS_MOUNT_PATH
 echo "Creating dir $LOGFILE_DIR"
 mkdir -p $LOGFILE_DIR
 
-# Install logrotate loggedfs config
-cp logrotate.conf /etc/logrotate.d/loggedfs.conf
-
 # Install dependencies
 apt-get update  # To get the latest package lists
 apt-get install loggedfs s3fs -y 
@@ -72,6 +69,24 @@ Environment=LOGFILE_DIR=$LOGFILE_DIR
 [Install]
 WantedBy=multi-user.target
 " > $LOGGEDFS_SYSTEMD_SERVICE_FILE
+
+# Write logrotate conf
+echo "$LOGFILE_DIR/*.log {
+    weekly
+    missingok
+    rotate 10
+    size 10M
+    dateext
+    dateformat -%Y%m%d
+    compress
+    delaycompress
+    notifempty
+    sharedscripts
+    postrotate
+        systemctl restart loggedfs
+    endscript
+}
+" > /etc/logrotate.d/loggeds3fs
 
 # Starting services
 systemctl daemon-reload
