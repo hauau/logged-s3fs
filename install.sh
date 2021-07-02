@@ -65,6 +65,7 @@ RemainAfterExit=no
 ExecStart=/usr/bin/loggedfs.sh
 Environment=S3FS_MOUNT_PATH=$S3FS_MOUNT_PATH
 Environment=LOGFILE_DIR=$LOGFILE_DIR
+StandardOutput=append:$LOGFILE_DIR/s3fs.log
 
 [Install]
 WantedBy=multi-user.target
